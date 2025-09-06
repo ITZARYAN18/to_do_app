@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/utilities/dialog_box.dart';
 
 import '../utilities/to_do.dart';
 
@@ -25,9 +26,7 @@ class _HomePageState extends State<HomePage> {
   void createNewTask(){
     showDialog(context: context,
       builder: (context){
-        return AlertDialog(
-
-        );
+        return DialogBox();
       },
     );
   }
