@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ToDoTile extends StatelessWidget {
 
   final String taskName;
   final bool taskCompleted;
   Function(bool?)?onChanged;
+  Function(BuildContext)? deleteFunction;
 
   ToDoTile({super.key,
     required this.onChanged,
     required this.taskCompleted,
-    required this.taskName
+    required this.taskName,
+    required this.deleteFunction,
   });
 
 
@@ -18,27 +21,39 @@ class ToDoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 25,right: 25,top: 25),
-      child: Container(
-        padding: EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Colors.yellow,
-          borderRadius: BorderRadius.circular(20),
+      child: Slidable(
+        endActionPane: ActionPane(
+            motion: StretchMotion(),
+            children:[
+              SlidableAction(onPressed:deleteFunction,
+              backgroundColor: Colors.red,
+              icon: Icons.delete,
+                borderRadius: BorderRadius.circular(20),
+              )
+            ] 
         ),
-        child: Row(
-          children: [
-
-            Checkbox(value: taskCompleted,
-              onChanged: onChanged,
-              activeColor: Colors.black,
-            ),
-            Text(taskName,
-              style: TextStyle(
-                fontSize: 25,
-                decoration: taskCompleted?
-                TextDecoration.lineThrough:
-                TextDecoration.none,
-              ),),
-          ],
+        child: Container(
+          padding: EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.yellow,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+        
+              Checkbox(value: taskCompleted,
+                onChanged: onChanged,
+                activeColor: Colors.black,
+              ),
+              Text(taskName,
+                style: TextStyle(
+                  fontSize: 25,
+                  decoration: taskCompleted?
+                  TextDecoration.lineThrough:
+                  TextDecoration.none,
+                ),),
+            ],
+          ),
         ),
       ),
     );
