@@ -2,14 +2,25 @@ import 'package:hive/hive.dart';
 
 class TodoDatabase{
 
-  List toDo = [];
+  List toDo =[
+    // ["Make Tutorial",false],
+    // ["Do Exercise",false],
+  ];
 
-  final _mybox = Hive.openBox('mybox');
+  final _myBox = Hive.box('mybox');
 
-  void CreateInitialData(){
+  void createInitialData(){
     toDo = [
       ["Make Tutorial",false],
-      ["Do Exercise",false]
+      ["Do Exercise",false],
     ];
 }
+  void loadData(){
+    toDo = _myBox.get("TODOLIST");
+  }
+
+  void updateData(){
+  _myBox.put("TODOLIST",toDo);
+  }
+
 }
