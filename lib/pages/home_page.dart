@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:to_do/data/database.dart';
 import 'package:to_do/utilities/dialog_box.dart';
 
 import '../utilities/to_do.dart';
@@ -11,22 +13,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _controller = TextEditingController();
 
-  List toDo =[
-    ["tada",true],
-    ["tutu",false],
-  ];
+  final _box = Hive.openBox('mybox');
+  final _controller = TextEditingController();
+   TodoDatabase db = TodoDatabase();
+
 
   void checkBox (bool? value,int index){
     setState(() {
-      toDo[index][1] =!toDo[index][1];
+      db.toDo[index][1] =!db.toDo[index][1];
     });
   }
 
   void CreateNewTask(){
       setState(() {
-        toDo.add([_controller.text,false]);
+        db.toDo.add([_controller.text,false]);
         _controller.clear();
       });
       Navigator.of(context).pop();
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   void deleteTask(int index){
     setState(() {
-      toDo.removeAt(index);
+     db.toDo.removeAt(index);
     });
   }
 
@@ -72,11 +73,11 @@ class _HomePageState extends State<HomePage> {
                   value,
                   index),
               deleteFunction: (context) => deleteTask(index),
-              taskCompleted: toDo[index][1],
-              taskName: toDo[index][0],
+              taskCompleted:db.toDo[index][1],
+              taskName: db.toDo[index][0],
             );
           },
-          itemCount: toDo.length,
+          itemCount: db.toDo.length,
         )
 
 
